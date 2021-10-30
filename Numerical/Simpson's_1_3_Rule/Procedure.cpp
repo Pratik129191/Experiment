@@ -1,7 +1,7 @@
 #include<iostream>
 #include<string>
 #include<cstdlib>
-#include<corecrt_math_defines.h>
+//#include<corecrt_math_defines.h>
 #include<cmath>
 #define _USE_MATH_DEFINES
 #define WHITE "\033[0;37m"
