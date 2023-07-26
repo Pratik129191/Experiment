@@ -1,6 +1,5 @@
-def takeInputFromCSV():
+def takeInputFromCSV(path):
     import pandas
-    path = input("Enter The CSV File Path (Exclude Quotation Marks):\t")
     file = pandas.read_csv(path)
     table = []
     task, time, dependency = list(file['Task']), list(file['Time']), list(file['Dependency'])
@@ -34,9 +33,14 @@ def takeInputFromUser():
 
 
 def takeInput():
-    if input("Do You Have Any CSV File to Give Input:\t").upper()[0] == 'Y':
-        return takeInputFromCSV()
-    return takeInputFromUser()
+    if input("Want To Perform Bulk Operations:\t").upper()[0] == 'Y':
+        path = input("Enter The Folder Location Where CSV Files are Stored (Exclude Quotation Marks):\t")
+        processCSVFilesInFolder(path)
+    elif input("Have Any CSV File to Give Input:\t").upper()[0] == 'Y':
+        path = input("Enter The CSV File Path (Exclude Quotation Marks):\t")
+        return takeInputFromCSV(path)
+    else:
+        return takeInputFromUser()
 
 
 def convertToDictionary_2(table):
@@ -98,4 +102,44 @@ def formatAsDataFrame_5(dicTable: dict):
     return final
 
 
+def processCSVFilesInFolder(path):
+    import os
+    import glob
 
+    if not os.path.exists(path):
+        print("Path Doesn't Exists. Try Again.")
+        exit(0)
+
+    csv_files = glob.glob(os.path.join(path, "*.csv"))
+    for file in csv_files:
+        file_name = file.split("\\")[-1]
+        print(f"Processing {file_name} ... ", end="")
+        table = takeInputFromCSV(file)
+        df = generateDataFrames(table)
+        plotAndSaveFigures(df, file_name)
+        print("Done")
+    print("All Tasks Are Completed ... Exiting System ...")
+    exit(0)
+
+
+def generateDataFrames(table):
+    import pandas as pd
+    return pd.DataFrame(
+        formatAsDataFrame_5(
+            calculateTimeToStart_4(
+                findHiddenDependency_3(
+                    convertToDictionary_2(table)
+                )
+            )
+        )
+    )
+
+
+def plotAndSaveFigures(df, file_name):
+    from matplotlib import pyplot as plt
+
+    plt.barh(y=df['task'], width=df['duration'], left=df['time_to_start'], color='maroon')
+    plt.title(f"Project Management Schedule on {file_name}", fontsize=15)
+    plt.xlabel("<---- Time ---->")
+    plt.ylabel("<---- Tasks ---->")
+    plt.savefig(f"Graph_Outputs/{file_name.split('.csv')[-2]}.png")
