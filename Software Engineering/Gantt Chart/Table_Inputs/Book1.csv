@@ -1,0 +1,6 @@
+﻿Task,Time,Dependency
+t0,20,None
+t1,10,t0
+t2,250,None
+t3,35,"t0, t1"
+t4,139,t0
