@@ -54,7 +54,7 @@ def takeInputAndProcess():
         temp = processAccordingToRatio(ratio, func_val)
         final['simple'][func_name] = temp[0]
         final['average'][func_name] = temp[1]
-        final['complex'][func_name] = temp[1]
+        final['complex'][func_name] = temp[2]
         x = input("Type 'EXIT' to Stop Giving Input (Else Hit Enter):\t")
 
     for i in range(int(input("How Many Types of Characteristics are There:\t"))):
