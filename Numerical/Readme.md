@@ -1,2 +1,2 @@
 Here Main drawback is ...
-I Haven't Implemented any Logarithm Functions
+#I Haven't Implemented any Logarithm Functions
